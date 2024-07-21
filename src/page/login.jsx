@@ -7,6 +7,8 @@ import { MdOutlinePerson } from "react-icons/md";
 import { MdOutlineLock } from "react-icons/md";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { useFormNotification } from "../store/formnotificationstore";
+import { FormNotification } from "../components/formnotification";
 
 export const Login = () => {
 
@@ -21,13 +23,7 @@ export const Login = () => {
     }));
 
     const getTableData = useTableData(state => (state.getTableData));
-
-    const [notification, setNotification] = useState({
-        show: null,
-        text: '',
-        color: '',
-        bg: ''
-    });
+    const getFormNoticationData = useFormNotification(state => (state.getFormNoticationData));
 
     const [showPassword, setShowPassword] = useState(true);
 
@@ -38,13 +34,7 @@ export const Login = () => {
 
     const handleUserLoginFunc = () => {
         if (loginCredential.username === '' || loginCredential.password === '') {
-            setNotification({
-                show: true,
-                text: 'all fields must not be empty',
-                color: 'text-yellow-500',
-                bg: 'bg-yellow-100'
-            })
-            setTimeout(() => { setNotification(state => ({ ...state, show: false })) }, 2000);
+           getFormNoticationData('warning', 'all fields must not be empty');
         }
         else {
             testLogin({ loginCredential });
@@ -62,25 +52,16 @@ export const Login = () => {
         if (returnedLoginData.islogin === false) {
             setLoginCredential({ username: '', password: '' });
             clearIsLogin();
-            setNotification({
-                show: true,
-                text: 'login failed',
-                color: 'text-red-500',
-                bg: 'bg-red-100'
-            })
-            setTimeout(() => { setNotification(state => ({ ...state, show: false })) }, 2000);
+            getFormNoticationData('error', 'login failed');
         }
     }, [returnedLoginData.islogin]);
 
     return (
         <section className="bg-blue-300 h-screen w-screen flex flex-col  items-center justify-center gap-y-2">
 
-            {notification.show &&
-             <div className={`${notification.bg} h-[3rem] w-[20rem] rounded-md flex items-center justify-center`}>
-                <p className={`${notification.color} text-xl`}>{notification.text}</p>
-
-             </div>
-            }
+            <div className="w-[20rem]">
+                 < FormNotification /> 
+            </div>
 
             <div className="z-10 h-fit w-[20rem] bg-white shadow-xl rounded-lg px-4 py-6 flex flex-col justify-center gap-y-5">
                 <h3 className="text-center text-3xl font-semibold">Login</h3>

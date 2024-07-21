@@ -10,6 +10,8 @@ import { MdOutlineMail } from "react-icons/md";
 import { MdOutlinePerson } from "react-icons/md";
 import { MdOutlineLock } from "react-icons/md";
 import { useRegister } from "../store/registerstore";
+import { useFormNotification } from "../store/formnotificationstore";
+import { FormNotification } from "../components/formnotification";
 
 export const Register = () => {
 
@@ -21,14 +23,9 @@ export const Register = () => {
         clearIsRegistered: state.clearIsRegistered,
     }));
 
-    const [showPassword, setShowPassword] = useState(true)
+    const getFormNoticationData = useFormNotification(state => state.getFormNoticationData);
 
-    const [notification, setNotification] = useState({
-        show: null,
-        text: '',
-        color: '',
-        bg: ''
-    });
+    const [showPassword, setShowPassword] = useState(true)
 
     const [userRegisterCredential, setUserRegisterCredential] = useState({
         userregisterusername: '',
@@ -46,21 +43,13 @@ export const Register = () => {
     const handleUserProfileUploadChange = (e) => { setUserProfile(e.target.files[0]) };
 
     const handleInsertUserData = () => {
-        if (Object.values(userRegisterCredential).every(item => item === '') || (userProfile === null)) {
-            setNotification({
-                show: true,
-                text: 'registration failed',
-                color: 'text-yellow-500',
-                bg: 'bg-yellow-100'
-            });
-            setTimeout(() => { setNotification(state => ({ ...state, show: false })) }, 2000);
+        if (Object.values(userRegisterCredential).includes('') || (userProfile === null)) {
+            getFormNoticationData('warning', 'all fields must not be empty');
         }
         else {
             insertRegisterData({ userRegisterCredential, userProfile });
         }
     }
-
-    const [text, setText] = useState('');
 
     useEffect(() => {
         if (isRegistered === false) {
@@ -68,14 +57,8 @@ export const Register = () => {
             clearIsRegistered();
         }
         if (isRegistered === true) {
-            clearIsRegistered();
-            setNotification({
-                show: true,
-                text: 'user already exist',
-                color: 'text-red-500',
-                bg: 'bg-red-100'
-            })
-            setTimeout(() => { setNotification(state => ({ ...state, show: false })) }, 2000);
+            clearIsRegistered();   
+            getFormNoticationData('error', 'registration failed');
         }
     }, [isRegistered]);
 
@@ -97,11 +80,9 @@ export const Register = () => {
     return (
         <section className="bg-blue-300 h-screen w-screen flex flex-col items-center justify-center gap-y-2">
 
-            {notification.show &&
-                <div className={`${notification.bg} h-[3rem] w-[23rem] rounded-md flex items-center justify-center`}>
-                    <p className={`${notification.color} text-xl`}>{notification.text}</p>
-                </div>
-            }
+            <div className="w-[23rem]">
+                < FormNotification />
+            </div>
 
             {/* Login Form */}
             <div className="z-10 h-fit w-[23rem] max-w-[95%] bg-white shadow-xl rounded-lg px-4 py-6 flex flex-col justify-center gap-y-5">
