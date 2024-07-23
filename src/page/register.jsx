@@ -57,7 +57,7 @@ export const Register = () => {
             clearIsRegistered();
         }
         if (isRegistered === true) {
-            clearIsRegistered();   
+            clearIsRegistered();
             getFormNoticationData('error', 'registration failed');
         }
     }, [isRegistered]);

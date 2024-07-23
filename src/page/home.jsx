@@ -6,6 +6,7 @@ import { useTableData } from "../store/tabledata";
 import { TablePaginaion } from "../components/tablepagination";
 import { ShowTableEntries } from "../components/showtableentries";
 import { Table } from "../components/table";
+import { Toast } from "../components/toast";
 
 export const Home = () => {
 
@@ -22,7 +23,7 @@ export const Home = () => {
 
     const [data, setData] = useState({ firstname: '', lastname: '' })
 
-    const insertDataFunc = () => insertTableData({data});
+    const insertDataFunc = () => insertTableData({ data });
 
     useEffect(() => {
         if (isTableDataInserted === true) {
@@ -69,15 +70,15 @@ export const Home = () => {
 
                     <button onClick={insertDataFunc} className="h-[2.5rem] w-[4rem] rounded-sm bg-green-500">Add</button>
                 </div>
-                
+
                 {/* -------------------------------------------- */}
                 <section className="w-full flex flex-col justify-between gap-y-3 items-center">
                     <div className="w-full">
-                       <ShowTableEntries />
+                        <ShowTableEntries />
                     </div>
 
                     <div className="w-full h-[18.2rem] overflow-y-scroll ">
-                       <Table />
+                        <Table />
                     </div>
 
                     <div className="w-full flex justify-between items-center">
@@ -87,6 +88,11 @@ export const Home = () => {
 
             </section>
 
+            {/* -------------------daisy ui alert----------------------- */}
+            <Toast />
+
         </section>
+
+
     )
 }
