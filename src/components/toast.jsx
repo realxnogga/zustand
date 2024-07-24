@@ -1,17 +1,13 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useLogin } from "../store/loginstore"
 import { useToast } from "../store/toaststore"
 
 export const Toast = () => {
-    const { userData, returnedLoginData } = useLogin(state => ({
-        userData: state.userData,
-        returnedLoginData: state.returnedLoginData,
-    }))
+    const userData = useLogin(state => state.userData)
 
-    const { second, setSecond, resetSecond } = useToast(state => ({
+    const { second, setSecond } = useToast(state => ({
         second: state.second,
         setSecond: state.setSecond,
-        resetSecond: state.resetSecond,
     }))
 
     useEffect(() => {
@@ -24,8 +20,6 @@ export const Toast = () => {
             return () => clearTimeout(timer);
         }
     }, [second]);
-
-    console.log(second);
 
     if (second === 1) {
         return (

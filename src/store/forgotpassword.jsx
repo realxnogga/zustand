@@ -18,7 +18,6 @@ export const useForgotPassword = create(
             },
             clearIsEmailSent: () => set(state => ({isEmailSent: {...state.isEmailSent, bool: null}})),
 
-
             isPasswordChange: null,
             changePassword: ({changePasswordCredentialTemp}) => {
                 const formData = HelperFormDataFunc(changePasswordCredentialTemp);

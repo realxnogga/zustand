@@ -15,10 +15,10 @@ export const PreviewImage = ({ targetFile, design }) => {
         }
 
     return (
-        userProfilePreview ? <img
+        userProfilePreview && <img
             src={userProfilePreview}
             alt="Profile Preview"
             className={`${design} h-[4rem] w-[4rem] mb-1 object-contain`}
-        /> : ''
+        />
     )
 }
